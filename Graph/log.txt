@@ -1,0 +1,37 @@
+first vertex 3
+temp_ptr->data is 3
+node 3
+temp_ptr->data is 4
+node 3
+node 4
+temp_ptr->data is 5
+node 3
+node 4
+node 5
+temp_ptr->data is 6
+node 3
+node 4
+node 5
+node 6
+temp_ptr->data is 7
+source is 3
+destingatino is 4
+source is 3
+destingatino is 5
+source is 4
+destingatino is 6
+source is 4
+destingatino is 7
+source is 4
+destingatino is 8
+source is 5
+destingatino is 6
+source is 6
+destingatino is 7
+(3,4) 
+(3,5) 
+(4,6) 
+(4,7) 
+(4,8) 
+(5,6) 
+(6,7) 

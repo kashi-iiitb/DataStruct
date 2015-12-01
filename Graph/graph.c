@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
-
- struct vertex
+#include"queue.h"
+/* struct vertex
 {
 	int data;
 	int visited;
@@ -17,7 +17,7 @@ struct edge
 
 struct Graph{
 	struct vertex *g;
-};
+};*/
 
 void add_vertex(struct vertex **graph,int vnum)
 {
@@ -96,6 +96,75 @@ void display_edges(struct vertex **graph)
 	}
 }
 
+int RecIsReachable(struct vertex *src_ptr,int dest)
+{
+	struct edge *temp_edge=NULL;
+	
+	if(src_ptr->visited)
+		return 0;
+
+	if(src_ptr->data==dest)
+		return 1;
+	
+	src_ptr->visited=1;
+
+	for(temp_edge=src_ptr->e; temp_edge!=NULL; temp_edge=temp_edge->e)
+		if(RecIsReachable(temp_edge->connect_to,dest))
+			return 1;
+}
+
+int isReachable(struct vertex **graph,int src, int dest)
+{
+	struct vertex *temp=*graph;
+	struct vertex *src_ptr=NULL;
+	while(temp!=NULL)
+	{
+		if(temp->data==src)
+			src_ptr=temp;
+		temp->visited=0;
+		temp=temp->v;	
+	}
+	if(RecIsReachable(src_ptr,dest))
+		printf("Reachable\n");
+	else
+		printf("Not Reachable\n");
+}
+
+void bfs_traverse(struct vertex **graph)
+{
+ 	struct Queue *q=(struct Queue*)malloc(sizeof(struct Queue*));
+	q->front=NULL;
+ 	q->rear=NULL;
+	struct vertex *temp_ver=*graph;
+	temp_ver->visited=1;
+	enqueue(&q,temp_ver);
+
+	if(isEmpty(&q))
+		printf("queue is empty\n");
+	else
+		printf("queue is not empty\n");
+	while(!isEmpty(&q))
+	{
+		temp_ver=NULL;
+		temp_ver=dequeue(&q);
+		printf("node=%d visited=%d\t",(temp_ver->data),temp_ver->visited);
+		//temp_ver->visited=1;
+		struct edge* temp_edge=temp_ver->e;
+		while(temp_edge!=NULL)
+		{
+			//printf("node=%d\t",(temp_edge->connect_to)->data);
+			if((temp_edge->connect_to)->visited!=1)
+			{
+				(temp_edge->connect_to)->visited=1;
+				
+				enqueue(&q,temp_edge->connect_to);
+			}
+			temp_edge=temp_edge->e;
+		}
+	}
+
+}
+
 int main()
 {
 	//struct Graph *graph=(struct Graph*)malloc(sizeof(struct Graph));
@@ -115,6 +184,8 @@ int main()
 	add_edge(&graph,4,8);
 	add_edge(&graph,5,6);
 	add_edge(&graph,6,7);
-	display_edges(&graph);
+	/*display_edges(&graph);
+	isReachable(&graph,3,8);*/
+	bfs_traverse(&graph);
 }
 
