@@ -1,34 +1,13 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include "bstnew.h"
-#include "stack.h"
-/*
+
 struct node {
  int data;
  struct node *left;
  struct node *right;
  struct node *parent;
 };
-*/
 
-void iterative_preorder(struct node *root){
-	struct Stack *stack1= (struct Stack *)malloc(sizeof(struct Stack *));
-	stack1->top=NULL;
-	struct node *temp=NULL;
-	push(&stack1, root);
-	//pop(&stack1,&temp);
-	//printf("address root=%p address pop=%p\n",root, temp);
-	while(stack1->top!=NULL){
-		temp=NULL;
-		pop(&stack1,&temp);
-		printf("%d \n",temp->data);
-		if(temp->right)
-			push(&stack1,temp->right);
-		if(temp->left)
-			push(&stack1,temp->left);
-	}
-
-}
 void insert(struct node**root, int data)
 {
 	struct node *temp = (struct node*)malloc(sizeof(struct node));
@@ -37,7 +16,6 @@ void insert(struct node**root, int data)
 	temp->right=NULL;
 	temp->parent=NULL;
 	struct node *ptr=NULL;
-	struct node *prev=NULL;
 	if(*root==NULL)
 	{
 		*root=temp;
@@ -46,31 +24,22 @@ void insert(struct node**root, int data)
 	else
 	{
 		ptr=*root;
-		/*while(ptr->left!=NULL && ptr->right!=NULL)
+		while(ptr->left!=NULL && ptr->right!=NULL)
 		{
-		//	prev=ptr;
-			if(data<ptr->data)
-				ptr=ptr->left;
-			else
-				ptr=ptr->right;
-		}*/
-		while(ptr!=NULL)
-		{
-			prev=ptr;
 			if(data<ptr->data)
 				ptr=ptr->left;
 			else
 				ptr=ptr->right;
 		}
-		if(data<prev->data)
+		if(data<ptr->data)
 		{
-			prev->left=temp;
-			temp->parent=prev;
+			ptr->left=temp;
+			temp->parent=ptr;
 		}
 		else
 		{
-			prev->right=temp;
-			temp->parent=prev;
+			ptr->right=temp;
+			temp->parent=ptr;
 		}
 	}
 }
@@ -146,11 +115,10 @@ void display_elem(struct node*ptr)
 	//struct node* ptr=*root;
 	if(ptr==NULL)
 		return;
-	else{
+	else
 		display_elem(ptr->left);
 		printf("num is %d\n",ptr->data);	
 		display_elem(ptr->right);
-	}
 /*
 struct node* s=successor(ptr);
 printf("successor of %d is %d\n",ptr->data,s->data);
@@ -181,9 +149,7 @@ int main()
 	insert(&root,18);
 	insert(&root,17);
 	insert(&root,19);
-	iterative_preorder(root);
 	display_elem(root);
-	printf("break\n");
 	tree_delete(&root,6);
 	display_elem(root);
 return 0;
